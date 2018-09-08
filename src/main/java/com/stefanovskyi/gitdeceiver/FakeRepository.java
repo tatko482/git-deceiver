@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.TimeZone;
@@ -38,23 +37,22 @@ public class FakeRepository {
         remoteAddCommand.call();
     }
 
-    public void makeFakeCommit(String userFullName, String email, String uniqueId) throws IOException, GitAPIException {
+    public void makeFakeCommit(PersonIdent commitAuthor, String uniqueId) throws IOException, GitAPIException {
         Repository repository = this.git.getRepository();
+        String fileName = getFile(uniqueId, repository).getName();
 
-        File myFile = getFile(uniqueId, repository);
-        String fileName = myFile.getName();
         git.add().addFilepattern(fileName).call();
-
-        LocalDateTime localDateTime = LocalDateTime.of(2017, Month.SEPTEMBER, 4, 5, 15);
-        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        TimeZone utc = TimeZone.getTimeZone("UTC");
-        PersonIdent firstAuthor = new PersonIdent(userFullName, email, date, utc);
-
         git.commit().setMessage("Added " + fileName)
-                .setAuthor(firstAuthor)
+                .setAuthor(commitAuthor)
                 .call();
 
-        LOGGER.info("Committed file " + myFile + " to repository at " + repository.getDirectory());
+        LOGGER.info("Committed file " + fileName + " to repository at " + repository.getDirectory());
+    }
+
+    public PersonIdent getPersonIdent(String userFullName, String email, LocalDateTime commitDate) {
+        Date date = Date.from(commitDate.atZone(ZoneId.systemDefault()).toInstant());
+        TimeZone utc = TimeZone.getTimeZone("UTC");
+        return new PersonIdent(userFullName, email, date, utc);
     }
 
     public void cloneRepository(String repositoryName) {
@@ -74,6 +72,7 @@ public class FakeRepository {
         if (!myFile.createNewFile()) {
             throw new IOException("Could not create file " + myFile);
         }
+
         return myFile;
     }
 }
