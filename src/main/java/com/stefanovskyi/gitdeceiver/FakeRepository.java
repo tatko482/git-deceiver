@@ -30,11 +30,16 @@ public class FakeRepository {
         pushCommand.call();
     }
 
-    public void addRemote(String remoteURI) throws URISyntaxException, GitAPIException {
+    public void addRemote(String remoteURI) {
         RemoteAddCommand remoteAddCommand = this.git.remoteAdd();
         remoteAddCommand.setName("origin");
-        remoteAddCommand.setUri(new URIish(remoteURI));
-        remoteAddCommand.call();
+
+        try {
+            remoteAddCommand.setUri(new URIish(remoteURI));
+            remoteAddCommand.call();
+        } catch (URISyntaxException | GitAPIException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public void makeFakeCommit(PersonIdent commitAuthor, String uniqueId) throws IOException, GitAPIException {
