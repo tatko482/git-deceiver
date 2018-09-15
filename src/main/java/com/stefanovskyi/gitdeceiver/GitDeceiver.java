@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 public class GitDeceiver {
-    public static void main(String args[]) throws IOException, GitAPIException, URISyntaxException {
+    public static void main(String args[]) throws GitAPIException {
         String repositoryName = "";
         String userFullName = "";
         String userEmail = "";

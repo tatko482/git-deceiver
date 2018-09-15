@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RemoteAddCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.*;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.URIish;
@@ -42,14 +42,19 @@ public class FakeRepository {
         }
     }
 
-    public void makeFakeCommit(PersonIdent commitAuthor, String uniqueId) throws IOException, GitAPIException {
+    public void makeFakeCommit(PersonIdent commitAuthor, String uniqueId) {
         Repository repository = this.git.getRepository();
-        String fileName = getFile(uniqueId, repository).getName();
+        String fileName = null;
+        try {
+            fileName = getFile(uniqueId, repository).getName();
+            git.add().addFilepattern(fileName).call();
+            git.commit().setMessage("Added " + fileName)
+                    .setAuthor(commitAuthor)
+                    .call();
+        } catch (IOException | GitAPIException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
 
-        git.add().addFilepattern(fileName).call();
-        git.commit().setMessage("Added " + fileName)
-                .setAuthor(commitAuthor)
-                .call();
 
         LOGGER.info("Committed file " + fileName + " to repository at " + repository.getDirectory());
     }
