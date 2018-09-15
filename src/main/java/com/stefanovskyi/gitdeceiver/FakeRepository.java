@@ -23,11 +23,15 @@ public class FakeRepository {
 
     private Git git;
 
-    public void pushToRemote(String username, String password) throws GitAPIException {
+    public void pushToRemote(String username, String password)  {
         PushCommand pushCommand = this.git.push();
         UsernamePasswordCredentialsProvider user = new UsernamePasswordCredentialsProvider(username, password);
         pushCommand.setCredentialsProvider(user);
-        pushCommand.call();
+        try {
+            pushCommand.call();
+        } catch (GitAPIException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public void addRemote(String remoteURI) {
