@@ -1,5 +1,6 @@
 package com.stefanovskyi.gitdeceiver;
 
+import com.stefanovskyi.gitdeceiver.util.Util;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -10,8 +11,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -50,12 +49,12 @@ public class FakeRepository {
         Repository repository = this.git.getRepository();
         String fileName = null;
         try {
-            fileName = getFile(uniqueId, repository).getName();
+            fileName = Util.getFile(uniqueId, repository).getName();
             git.add().addFilepattern(fileName).call();
             git.commit().setMessage("Added " + fileName)
                     .setAuthor(commitAuthor)
                     .call();
-        } catch (IOException | GitAPIException e) {
+        } catch (GitAPIException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -75,18 +74,5 @@ public class FakeRepository {
         } catch (GitAPIException e) {
             LOGGER.info(e.getMessage());
         }
-    }
-
-    private File getFile(String uniqueId, Repository repository) throws IOException {
-        String safeUniqueId = uniqueId.replace("\\.", "_").replace(":", "_");
-        String parent = repository.getDirectory().getParent();
-        String child = "testfile_" + safeUniqueId;
-
-        File myFile = new File(parent, child);
-        if (!myFile.createNewFile()) {
-            throw new IOException("Could not create file " + myFile);
-        }
-
-        return myFile;
     }
 }
