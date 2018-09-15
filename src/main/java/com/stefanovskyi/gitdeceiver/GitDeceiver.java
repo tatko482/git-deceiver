@@ -1,21 +1,18 @@
 package com.stefanovskyi.gitdeceiver;
 
 import com.stefanovskyi.gitdeceiver.util.Util;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.Month;
 
 public class GitDeceiver {
     public static void main(String args[]) {
-        String repositoryName = "";
-        String userFullName = "";
-        String userEmail = "";
-        String login = "";
-        String password = "";
+        String repositoryName = args[0];
+        String userFullName = args[1];
+        String userEmail = args[2];
+        String login = args[3];
+        String password = args[4];
 
         FakeRepository fakeRepository = new FakeRepository();
 
