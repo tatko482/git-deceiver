@@ -4,7 +4,6 @@ import com.stefanovskyi.gitdeceiver.util.Util;
 import org.eclipse.jgit.lib.PersonIdent;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 
 public class GitDeceiver {
 
@@ -15,7 +14,7 @@ public class GitDeceiver {
 
         fakeRepository.cloneRepository(gitAuthData.getRepositoryName());
         fakeRepository.addRemote(gitAuthData.getRepositoryName());
-        LocalDateTime commitDate = getStartDate();
+        LocalDateTime commitDate = Util.getStartDate(args[5]);
 
         for (int i = 0; i < 10; i++) {
             String date = LocalDateTime.now().toString();
@@ -29,10 +28,6 @@ public class GitDeceiver {
 
         fakeRepository.pushToRemote(gitAuthData.getLogin(), gitAuthData.getPassword());
         Util.deleteRepositoryFolderIfExists(Util.getRepositoryNameFromUrl(gitAuthData.getRepositoryName()));
-    }
-
-    private static LocalDateTime getStartDate() {
-        return LocalDateTime.of(2017, Month.SEPTEMBER, 4, 5, 15);
     }
 
     private static class GitAuthData {

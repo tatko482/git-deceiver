@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 public class Util {
     private final static Logger LOGGER = Logger.getLogger(Util.class.getName());
@@ -49,11 +51,23 @@ public class Util {
         return myFile;
     }
 
-    private static String removeRestrictedSigns(String uniqueId) {
-        return uniqueId.replace("\\.", "_").replace(":", "_");
-    }
-
     public static String getRandomString(int length) {
         return RandomStringUtils.randomAlphabetic(length);
+    }
+
+    public static LocalDateTime getStartDate(String arg) {
+        String[] parts = arg.split("-");
+
+        int year = Integer.parseInt(parts[0]);
+        Month month = Month.of(Integer.valueOf(parts[1]));
+        int dayOfMonth = Integer.parseInt(parts[2]);
+        int hour = Integer.parseInt(parts[3]);
+        int minute = Integer.parseInt(parts[4]);
+
+        return LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+    }
+
+    private static String removeRestrictedSigns(String uniqueId) {
+        return uniqueId.replace("\\.", "_").replace(":", "_");
     }
 }

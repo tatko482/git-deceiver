@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +51,14 @@ public class UtilTest {
         Set<String> listWithoutDuplicates = new HashSet<>(listOfRandomStrings);
 
         assertEquals(listOfRandomStrings.size(), listWithoutDuplicates.size());
+    }
+
+    @Test
+    public void whenGetStartDateExecuted_validLocalDateTimeReturned() {
+        LocalDateTime startDate = Util.getStartDate("2017-11-4-5-15");
+        LocalDateTime actual = LocalDateTime.of(2017, Month.of(11), 4, 5, 15);
+
+        assertEquals(actual, startDate);
     }
 
     private void createDirectoryIfNotExists(String directoryName) {
