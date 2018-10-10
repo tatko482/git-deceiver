@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 public class GitDeceiver {
-    public static void main(String args[]) {
-        GitAuthData gitAuthData = new GitAuthData(args).invoke();
 
+    public static void main(String args[]) {
+
+        GitAuthData gitAuthData = new GitAuthData(args).invoke();
         FakeRepository fakeRepository = new FakeRepository();
 
         fakeRepository.cloneRepository(gitAuthData.getRepositoryName());
@@ -18,8 +19,11 @@ public class GitDeceiver {
 
         for (int i = 0; i < 10; i++) {
             String date = LocalDateTime.now().toString();
+
             commitDate = commitDate.plusDays(1);
-            PersonIdent personIdent = fakeRepository.getPersonIdent(gitAuthData.getUserFullName(), gitAuthData.getUserEmail(), commitDate);
+            PersonIdent personIdent = fakeRepository.getPersonIdent(gitAuthData.getUserFullName(),
+                                                                    gitAuthData.getUserEmail(),
+                                                                    commitDate);
             fakeRepository.makeFakeCommit(personIdent, date);
         }
 

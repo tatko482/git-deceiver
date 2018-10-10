@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RemoteAddCommand;
-import org.eclipse.jgit.api.errors.*;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.URIish;
@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class FakeRepository {
+
     private final static Logger LOGGER = Logger.getLogger(FakeRepository.class);
 
     private Git git;
@@ -57,7 +58,6 @@ public class FakeRepository {
         } catch (GitAPIException e) {
             LOGGER.error(e.getMessage(), e);
         }
-
 
         LOGGER.info("Committed file " + fileName + " to repository at " + repository.getDirectory());
     }
