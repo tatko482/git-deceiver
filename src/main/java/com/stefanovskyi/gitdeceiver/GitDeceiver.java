@@ -4,6 +4,7 @@ import com.stefanovskyi.gitdeceiver.util.Util;
 import org.eclipse.jgit.lib.PersonIdent;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class GitDeceiver {
 
@@ -16,13 +17,24 @@ public class GitDeceiver {
         fakeRepository.addRemote(gitAuthData.getRepositoryName());
         LocalDateTime commitDate = Util.getStartDate(args[5]);
 
-        for (int i = 0; i < 310; i++) { // days
+        Random rand = new Random();
 
+        int amountOfDays = 333;
+
+        for (int day = 0; day < amountOfDays; day++) {
             commitDate = commitDate.plusDays(1);
-            PersonIdent personIdent = fakeRepository.getPersonIdent(gitAuthData.getUserFullName(),
-                                                                    gitAuthData.getUserEmail(),
-                                                                    commitDate);
-            fakeRepository.makeFakeCommit(personIdent);
+
+            int maximumCommitsPerDay = 15;
+            int commitsPerDay = rand.nextInt(maximumCommitsPerDay) + 1;
+
+            for (int commitNumber = 0; commitNumber < commitsPerDay; commitNumber++) {
+
+                commitDate = commitDate.plusMinutes(15);
+                PersonIdent personIdent = fakeRepository.getPersonIdent(gitAuthData.getUserFullName(),
+                        gitAuthData.getUserEmail(),
+                        commitDate);
+                fakeRepository.makeFakeCommit(personIdent);
+            }
         }
 
         fakeRepository.pushToRemote(gitAuthData.getLogin(), gitAuthData.getPassword());
