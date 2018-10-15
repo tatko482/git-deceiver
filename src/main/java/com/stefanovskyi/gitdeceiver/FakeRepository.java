@@ -1,6 +1,5 @@
 package com.stefanovskyi.gitdeceiver;
 
-import com.stefanovskyi.gitdeceiver.util.Util;
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -46,11 +45,10 @@ public class FakeRepository {
         }
     }
 
-    public void makeFakeCommit(PersonIdent commitAuthor, String uniqueId) {
+    public void makeFakeCommit(PersonIdent commitAuthor) {
         Repository repository = this.git.getRepository();
-        String fileName = null;
+        String fileName = "Main.java";
         try {
-            fileName = Util.getFile(uniqueId, repository).getName();
             git.add().addFilepattern(fileName).call();
             git.commit().setMessage("Added " + fileName)
                     .setAuthor(commitAuthor)

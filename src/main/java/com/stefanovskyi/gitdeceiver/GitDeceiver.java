@@ -16,14 +16,13 @@ public class GitDeceiver {
         fakeRepository.addRemote(gitAuthData.getRepositoryName());
         LocalDateTime commitDate = Util.getStartDate(args[5]);
 
-        for (int i = 0; i < 10; i++) {
-            String date = LocalDateTime.now().toString();
+        for (int i = 0; i < 310; i++) { // days
 
             commitDate = commitDate.plusDays(1);
             PersonIdent personIdent = fakeRepository.getPersonIdent(gitAuthData.getUserFullName(),
                                                                     gitAuthData.getUserEmail(),
                                                                     commitDate);
-            fakeRepository.makeFakeCommit(personIdent, date);
+            fakeRepository.makeFakeCommit(personIdent);
         }
 
         fakeRepository.pushToRemote(gitAuthData.getLogin(), gitAuthData.getPassword());
