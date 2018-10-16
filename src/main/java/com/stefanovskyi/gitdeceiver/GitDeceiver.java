@@ -18,9 +18,17 @@ public class GitDeceiver {
         fakeRepository.addRemote(gitAuthData.getRepositoryName());
         LocalDateTime commitDate = Util.getStartDate(args[5]);
 
-        Random rand = new Random();
-
         int amountOfDays = 333;
+
+        generateCommits(gitAuthData, fakeRepository, commitDate, amountOfDays);
+
+        fakeRepository.pushToRemote(gitAuthData.getLogin(), gitAuthData.getPassword());
+        Util.deleteRepositoryFolderIfExists(Util.getRepositoryNameFromUrl(gitAuthData.getRepositoryName()));
+    }
+
+    private static void generateCommits(GitAuthData gitAuthData, FakeRepository fakeRepository,
+                                        LocalDateTime commitDate, int amountOfDays) {
+        Random rand = new Random();
 
         for (int day = 0; day < amountOfDays; day++) {
             commitDate = commitDate.plusDays(1);
@@ -36,9 +44,6 @@ public class GitDeceiver {
                 fakeRepository.makeFakeCommit(personIdent);
             }
         }
-
-        fakeRepository.pushToRemote(gitAuthData.getLogin(), gitAuthData.getPassword());
-        Util.deleteRepositoryFolderIfExists(Util.getRepositoryNameFromUrl(gitAuthData.getRepositoryName()));
     }
 
     private static int getCommitsAmountPerDay(LocalDateTime commitDate, Random rand) {
