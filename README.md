@@ -1,4 +1,5 @@
 # git-deceiver
+[![Build Status](https://travis-ci.com/tatko482/git-deceiver.svg?branch=master)](https://travis-ci.com/tatko482/git-deceiver)
 
 *Git Deceiver* is the application to create fake activity on GitHub.
 
