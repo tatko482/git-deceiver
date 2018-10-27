@@ -44,8 +44,4 @@ public class Util {
 
         return LocalDateTime.of(year, month, dayOfMonth, hour, minute);
     }
-
-    private static String removeRestrictedSigns(String uniqueId) {
-        return uniqueId.replace("\\.", "_").replace(":", "_");
-    }
 }
