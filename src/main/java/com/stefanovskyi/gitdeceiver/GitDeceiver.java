@@ -14,8 +14,7 @@ public class GitDeceiver {
         fakeRepository.cloneRepository(gitAuthData.getRepositoryName());
         fakeRepository.addRemote(gitAuthData.getRepositoryName());
         LocalDateTime commitDate = Util.getStartDate(args[5]);
-
-        int amountOfDays = 333;
+        int amountOfDays = Integer.parseInt(args[6]);
 
         fakeRepository.generateCommits(gitAuthData, fakeRepository, commitDate, amountOfDays);
 
